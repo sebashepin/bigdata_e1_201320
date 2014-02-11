@@ -15,9 +15,8 @@ class CursosCrawlSpider(CrawlSpider):
 
     def parse_departamento(self, response):
         # Regex compilation
-        nameCountRegex = re.compile(ur"[^0-9A-Za-z]+",re.UNICODE)
-        lastNameRegex = re.compile(ur"\w+[\s']\w+",re.UNICODE)
-        firstNameRegex = re.compile(ur"\w+[\s']\w+[\s']",re.UNICODE)
+        nameCountRegex = re.compile(ur"\s",re.UNICODE)
+        splitNameRegex = re.compile(ur"([^\s]+\s[^\s]+)",re.UNICODE)
 
         sel = Selector(response)
         nombresProfesores = sel.xpath('//html/body/table/tr/td/table/tr/td/table/tr/td/table/tr/td/font/font/text()')
@@ -35,9 +34,9 @@ class CursosCrawlSpider(CrawlSpider):
                 nombres = splitName[1]
                 apellidos = splitName[0]
             else:
-                apellidos = lastNameRegex.findall(nombre)[0].strip()
+                apellidos = splitNameRegex.findall(nombre)[0].strip()
                 try:
-                    nombres = firstNameRegex.split(nombre)[1].strip()
+                    nombres = splitNameRegex.split(nombre)[2].strip()
                 except IndexError:
                     print ("ERRORHORRIBLE\t" + nombre + "\t" + str(len(splitName))).encode('utf-8')
             profesor = ProfesorItem()
