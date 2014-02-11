@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from scrapy.selector import Selector
 from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.contrib.spiders import CrawlSpider, Rule
@@ -14,13 +15,13 @@ class CursosCrawlSpider(CrawlSpider):
 
     def parse_departamento(self, response):
         # Regex compilation
-        nameCountRegex = re.compile(r"[^0-9A-Za-z]+")
-        lastNameRegex = re.compile(r"\w+[\s']\w+")
-        firstNameRegex = re.compile(r"\w+[\s']\w+[\s']")
+        nameCountRegex = re.compile(ur"[^0-9A-Za-z]+",re.UNICODE)
+        lastNameRegex = re.compile(ur"\w+[\s']\w+",re.UNICODE)
+        firstNameRegex = re.compile(ur"\w+[\s']\w+[\s']",re.UNICODE)
 
         sel = Selector(response)
         nombresProfesores = sel.xpath('//html/body/table/tr/td/table/tr/td/table/tr/td/table/tr/td/font/font/text()')
-        # Si está en la página principal
+        # Si está en la página principal omita el ciclo de parsing
         if not sel.xpath('//html/body/table/tr/td/table/tr/td/span/text()'):
             return
         departamento = sel.xpath('//html/body/table/tr/td/table/tr/td/span/text()').extract()[1].strip()
@@ -35,7 +36,10 @@ class CursosCrawlSpider(CrawlSpider):
                 apellidos = splitName[0]
             else:
                 apellidos = lastNameRegex.findall(nombre)[0].strip()
-                nombres = firstNameRegex.split(nombre)[1].strip()
+                try:
+                    nombres = firstNameRegex.split(nombre)[1].strip()
+                except IndexError:
+                    print ("ERRORHORRIBLE\t" + nombre + "\t" + str(len(splitName))).encode('utf-8')
             profesor = ProfesorItem()
             profesor['nombres'] = nombres
             profesor['apellidos'] = apellidos
