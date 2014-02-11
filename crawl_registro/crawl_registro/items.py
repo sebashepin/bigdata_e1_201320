@@ -5,11 +5,11 @@
 
 from scrapy.item import Item, Field
 
-class CrawlRegistroItem(Item):
-    # define the fields for your item here like:
-    # name = Field()
-    pass
-
 class ProfesorItem(Item):
-    nombre = Field()
+    nombres = Field()
+    apellidos = Field()
     departamento = Field()
+    extension = Field()
+    tipo = Field()
+    email = Field()
+    sitioWeb = Field()
