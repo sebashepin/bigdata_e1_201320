@@ -15,7 +15,7 @@ class ProfesoresSpider(Spider):
 	enlaces = []
 	for sitio in sitios:
 	    titulo = sitio.xpath('text()').extract()
-	    enlaces.append(sitio.xpath('@href').extract())
+	    enlaces.append(sitio.xpath('@href')[0].extract())
 	enlacesVisitados = []
 	for enlace in enlaces:
 	    enlacesVisitados.append(enlace)
