@@ -11,23 +11,25 @@ class ProfesoresSpider(Spider):
 
     def parse(self, response):
         sel = Selector(response)
-	sitios = sel.xpath("//div[@id='facultad']//li[@class='submenu2']/ul/li/a")
-	enlaces = []
-	for sitio in sitios:
-	    titulo = sitio.xpath("text()").extract()
-	    enlaces.append(sitio.xpath("@href")[0].extract())
-	enlacesVisitados = []
-	for enlace in enlaces:
-	    enlacesVisitados.append(enlace)
-	    #print enlace
-	    yield Request(enlace, self.parse_departamento)
+        sitios = sel.xpath("//div[@id='facultad']//li[@class='submenu2']/ul/li/a")
+        enlaces = []
+        for sitio in sitios:
+            titulo = sitio.xpath("text()").extract()
+            enlaces.append(sitio.xpath("@href")[0].extract())
+        enlacesVisitados = []
+        for enlace in enlaces:
+            enlacesVisitados.append(enlace)
+            #print enlace
+            yield Request(enlace, self.parse_departamento)
 
     def parse_departamento(self, response):
         sel = Selector(response)
-	ruta = sel.xpath("//a[contains(., 'lanta')]/@href").extract()
-	print ruta
-	#if ruta.startswith("http"):
-            #enlanceProfesores = ruta
-	#else:
-            #enlanceProfesores = response.url + "/" + ruta
-	#print enlanceProfesores
+        ruta = sel.xpath("//a[contains(., 'lanta')]/@href").extract()
+        if ruta:
+            ruta = ruta[0]
+            print ruta
+            if ruta.startswith("http"):
+                enlaceCompleto = ruta
+            else:
+                enlaceCompleto = response.url + "/" + ruta
+            print enlaceCompleto
