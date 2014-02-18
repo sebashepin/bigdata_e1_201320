@@ -15,7 +15,7 @@ class UniandesCrawlSpider(CrawlSpider):
 
     def parse_item(self, response):
         sel = Selector(response)
-        i = CrawlInstitucionalItem()
+        i = ProfesorItem()
         print str(sel.xpath('//title/text()').extract()) + "\t\t" + response.url
         myRequest = Request("https://mecanica.uniandes.edu.co",callback=self.parse_item)
         return myRequest
