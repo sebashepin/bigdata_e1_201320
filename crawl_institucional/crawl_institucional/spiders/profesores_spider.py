@@ -30,7 +30,7 @@ class ProfesoresSpider(Spider):
             if ruta.startswith("http"):
                 enlaceCompleto = ruta
             else:
-                enlaceCompleto = response.url + "/" + ruta
+                enlaceCompleto = response.url +  ruta[1:]
             print enlaceCompleto
             #yield Request(enlaceCompleto, self.parse_planta)
         else:
