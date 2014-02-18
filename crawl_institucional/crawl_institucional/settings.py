@@ -7,6 +7,7 @@
 #
 
 BOT_NAME = 'crawl_institucional'
+LOG_LEVEL = 'INFO'
 
 SPIDER_MODULES = ['crawl_institucional.spiders']
 NEWSPIDER_MODULE = 'crawl_institucional.spiders'

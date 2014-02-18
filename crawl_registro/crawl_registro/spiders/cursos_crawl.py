@@ -24,7 +24,7 @@ class CursosCrawlSpider(CrawlSpider):
         if not sel.xpath('//html/body/table/tr/td/table/tr/td/span/text()'):
             return
         departamento = sel.xpath('//html/body/table/tr/td/table/tr/td/span/text()').extract()[1].strip()
-        profesores = set()
+        profesores = dict()
         for nombre in nombresProfesores:
             nombre = nombre.extract().strip()
             if not nombre:
@@ -40,8 +40,8 @@ class CursosCrawlSpider(CrawlSpider):
             profesor['nombres'] = nombres
             profesor['apellidos'] = apellidos
             profesor['departamento'] = departamento
-            profesores.add(profesor)
+            profesores[(nombres+apellidos+departamento).encode('UTF-8')] = profesor
         #i['domain_id'] = sel.xpath('//input[@id="sid"]/@value').extract()
         #i['name'] = sel.xpath('//div[@id="name"]').extract()
         #i['description'] = sel.xpath('//div[@id="description"]').extract()
-        return profesores
+        return list(profesores.values())
