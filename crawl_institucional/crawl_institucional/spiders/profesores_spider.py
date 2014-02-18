@@ -24,7 +24,7 @@ class ProfesoresSpider(Spider):
 
     def parse_departamento(self, response):
         sel = Selector(response)
-        ruta = sel.xpath("//a[contains(., 'lanta')]/@href").extract()
+        ruta = sel.xpath("//a[re:test(., 'lanta|rofesores|Faculty')]/@href").extract()
         if ruta:
             ruta = ruta[0]
             if ruta.startswith("http"):
@@ -34,17 +34,7 @@ class ProfesoresSpider(Spider):
             print enlaceCompleto
             #yield Request(enlaceCompleto, self.parse_planta)
         else:
-            ruta = sel.xpath("//a[contains(., 'rofesores')]/@href").extract()
-            if ruta:
-                ruta = ruta[0]
-                if ruta.startswith("http"):
-                    enlaceCompleto = ruta
-                else:
-                    enlaceCompleto = response.url + "/" + ruta
-                print enlaceCompleto
-                #yield Request(enlaceCompleto, self.parse_planta)
-            else:
-                print "No encontró la página de profesores de " + response.url
+            print "No encontró la página de profesores de " + response.url
 
     def parse_planta(self, response):
         sel = Selector(response)
