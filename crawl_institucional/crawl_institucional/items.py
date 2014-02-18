@@ -7,9 +7,7 @@ from scrapy.item import Item, Field
 
 class ProfesorItem(Item):
     nombres = Field()
-    apellidos = Field()
     departamento = Field()
     extension = Field()
-    tipo = Field()
     email = Field()
     sitioWeb = Field()
